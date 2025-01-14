@@ -7,19 +7,45 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## démarche pour visualiser travail extérieur
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. Vérifier l’accès au repo git distant puis cloner ce dernier :
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```bash
+git clone <url_repo_git
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Copier le fichier .env de notre environnement Laravel dans le dossier cloné si il n’y est pas :
+
+```bash
+cp .env <chemin_vers_le_dossier_cloné>
+```
+
+1. Lancer le gestionnaire **Composer** pour installer les dépendances dans le répertoire `vendor` de votre projet local 
+
+```bash
+docker run --rm --interactive --tty --volume $PWD:/app composer install
+```
+
+1. Lancer cette commande pour démarrer l’environnement Docker configuré spécialement pour  Laravel
+
+```bash
+./vendor/bin/sail up -d
+```
+
+1. On va ensuite faire la migration de donnée :
+
+```bash
+./vendor/bin/sail artisan migrate
+```
+
+⚠️ ATTENTION ! Il se peut qu’il y est une erreur du type :
+
+```bash
+Error response from daemon: driver failed programming external connectivity on endpoint blog_laravel-meilisearch-1 (118ec04adcb26925a699bf396931b2cbb553ec1b71ce5ee1d27cafa56b9e2085): Bind for 0.0.0.0:7700 failed: port is already allocated
+```
+
+Il faut aller dans le fichier .env et remplacer la variable APP_URL=http://localhost par APP_URL=http://127.0.0.1
 
 ## Learning Laravel
 
