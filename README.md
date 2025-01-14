@@ -7,6 +7,11 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+
+## Principe
+Laravel est un framework pour créer des applications web. On commence par le télécharger, puis on utilise Sail (qui repose sur Docker) pour exécuter des commandes Laravel. Ensuite, on migre les données pour configurer la base de données avant de pouvoir commencer à développer l'application.
+
+
 ## démarche pour visualiser travail extérieur
 
 1. Vérifier l’accès au repo git distant puis cloner ce dernier :
