@@ -12,13 +12,13 @@
 1. Vérifier l’accès au repo git distant puis cloner ce dernier :
 
 ```bash
-git clone <url_repo_git
+git clone <url_repo_git>
 ```
 
 1. Copier le fichier .env de notre environnement Laravel dans le dossier cloné si il n’y est pas :
 
 ```bash
-cp .env <chemin_vers_le_dossier_cloné>
+cp .env.example <chemin_vers_le_dossier_cloné/.env>
 ```
 
 1. Lancer le gestionnaire **Composer** pour installer les dépendances dans le répertoire `vendor` de votre projet local 
@@ -37,6 +37,12 @@ docker run --rm --interactive --tty --volume $PWD:/app composer install
 
 ```bash
 ./vendor/bin/sail artisan migrate
+```
+
+1. On peut ensuite tester en tapant l'url suivante dans le navigateur :
+
+```bash
+http://127.0.0.1
 ```
 
 ⚠️ ATTENTION ! Il se peut qu’il y est une erreur du type :
