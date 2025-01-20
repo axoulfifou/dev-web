@@ -1,29 +1,21 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
+# documentation dev-web
 
 ## Principe
+
 Laravel est un framework pour créer des applications web. On commence par le télécharger, puis on utilise Sail (qui repose sur Docker) pour exécuter des commandes Laravel. Ensuite, on migre les données pour configurer la base de données avant de pouvoir commencer à développer l'application.
 
-
-## démarche pour visualiser travail extérieur
+## Créer un nouveau projet LARAVEL
 
 1. Vérifier l’accès au repo git distant puis cloner ce dernier :
 
 ```bash
-git clone <url_repo_git>
+git clone <url_repo_git
 ```
 
 1. Copier le fichier .env de notre environnement Laravel dans le dossier cloné si il n’y est pas :
 
 ```bash
-cp .env.example <chemin_vers_le_dossier_cloné/.env>
+cp .env <chemin_vers_le_dossier_cloné>
 ```
 
 1. Lancer le gestionnaire **Composer** pour installer les dépendances dans le répertoire `vendor` de votre projet local 
@@ -44,12 +36,6 @@ docker run --rm --interactive --tty --volume $PWD:/app composer install
 ./vendor/bin/sail artisan migrate
 ```
 
-1. On peut ensuite tester en tapant l'url suivante dans le navigateur :
-
-```bash
-http://127.0.0.1
-```
-
 ⚠️ ATTENTION ! Il se peut qu’il y est une erreur du type :
 
 ```bash
@@ -58,47 +44,213 @@ Error response from daemon: driver failed programming external connectivity on e
 
 Il faut aller dans le fichier .env et remplacer la variable APP_URL=http://localhost par APP_URL=http://127.0.0.1
 
-## Learning Laravel
+## **2 - Models, migrations et controllers**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Avant toute chose pour faciliter les futurs commandes nous allons créer un alias qui permettra d’utiliser **sail** plus facilement 
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Placez-vous dans le répertoire de travail :
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+cd /home/avignaud/dev-web/minimalist-blog-laravel 
+```
 
-## Laravel Sponsors
+Créer l’allias pour lancer l’application sail avec la simple commande ‘sail’ :
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+```
 
-### Premium Partners
+On peut ensuite le lancer simplement avec la commande :
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+sail up -d
+```
 
-## Contributing
+On va ensuite créer nos premier modèle qui sont l’équivalent des tables dans les bases de données:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Création du modèle post :
 
-## Code of Conduct
+```bash
+sail php artisan make:model Post -mc
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
 
-## Security Vulnerabilities
+-m permet  créer  une **migration** associée au modèle. Cela génère un fichier de migration dans le dossier `database/migrations`, qui peut être utilisé pour créer ou modifier la table correspondante dans la base de données.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-c créé  un **contrôleur** pour le modèle. Cela génère un fichier contrôleur dans le dossier `app/Http/Controllers`, permettant de gérer la logique liée à ce modèle (ex : gestion des routes, traitements).
 
-## License
+On peut ensuite faire cette commande pour les modèles Comment et Reply :
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# dev-web
+```bash
+sail php artisan make:model Comment -mc
+sail php artisan make:model Reply -mc
+```
+
+*infos: artisan est simplement  l'interface en ligne de commande  de Laravel*
+
+On va ensuite ajouter des champs à nos tables , pour cela on va modifier les fichiers de migrations créer avec le ‘-m’ :
+
+Pour `2025_01_20_075956_create_posts_table.php`, modifier la fonction up comme ceci :
+
+```php
+Schema::create('posts', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedInteger('user_id');
+            $table->string('title');
+            $table->text('body');
+            $table->timestamps();
+```
+
+Pour `2025_01_20_075956_create_comments_table.php`, modifier la fonction up comme ceci :
+
+```php
+Schema::create('comments', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id'); 
+            $table->unsignedBigInteger('post_id'); 
+            $table->text('body'); 
+            $table->timestamps();
+```
+
+Pour `2025_01_20_075956_create_replies_table.php`, modifier la fonction up comme ceci :
+
+```php
+Schema::create('replies', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id'); 
+            $table->unsignedBigInteger('comment_id'); 
+            $table->text('body'); 
+            $table->timestamps();
+```
+
+On va ensuite établir les relations entres les tables, (équivalent des flèches sur le schéma) :
+
+On commence par ajouter la relation **‘one-to_many’**, (la flèche qui va de la table user vers la table posts sur users_id) :
+
+Dans le fichier `app/Models/User.php`, modifier la fonction up comme ceci :
+
+*il faut ajouter la fonction dans la class User*
+
+```php
+public function posts() 
+{
+    return $this->hasMany(Post::class, 'user_id');
+}
+```
+
+Pour  `app/Models/Post.php` :
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    // table name to be used
+    protected $table = 'posts';
+
+    // columns to be allowed in mass-assingment 
+    protected $fillable = ['user_id', 'title', 'body'];
+
+    /* Relations */
+
+    // One to many inverse relationship with User model
+    public function owner() {
+    	return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // One to Many relationship with Comment model
+    public function comments()
+    {
+    	return $this->hasMany(Comment::class, 'post_id');
+    }
+
+    /**
+     * get show post route
+     *
+     * @return string
+     */
+    public function path()
+    {
+        return "/posts/{$this->id}";
+    }
+}
+
+```
+
+Pour  `app/Models/Comment.php` :
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Comment extends Model
+{
+    # table name to be used by model
+    protected $table = 'comments';
+
+    # columns to be allowed in mass-assingment
+    protected $fillable = ['user_id', 'post_id', 'body'];
+
+    /** Relations */
+
+    # One-to-Many inverse relation with User model.
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    # One-to-Many inverse relation with Post model.
+    public function post()
+    {
+    	return $this->belongsTo(Post::class, 'post_id');
+    }
+
+    # One-to-Many relation with Reply model.
+    public function replies()
+    {
+    	return $this->hasMany(Reply::class, 'comment_id');
+    }
+}
+
+```
+
+Pour  `app/Models/Reply.php` :
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Reply extends Model
+{
+    // Table name to be used by the model.
+    protected $table = 'replies';
+
+    // Columns to be used in mass-assignment.
+    protected $fillable = ['user_id', 'comment_id', 'body'];
+
+    /** Relations */
+
+    // One-to-Many inverse relation with User model.
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // One-to-Many inverse relation with Comment model.
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class, 'comment_id');
+    }
+}
+
+```
