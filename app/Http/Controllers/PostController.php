@@ -7,6 +7,19 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    /**
+     * Affiche la liste des prestations (index).
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        // Récupérer toutes les prestations
+        $prestations = Post::all();
+
+        // Retourner une vue avec les prestations
+        return view('prestations.index', compact('prestations'));
+    }
 
     /**
      * Show the form for creating a new resource.

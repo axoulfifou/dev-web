@@ -28,13 +28,18 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+Route::get('/about', function () {
+	return view('about'); // Correspond à "resources/views/about.blade.php"
+});
+
 // group the following routes by auth middleware - you have to be signed-in to proceeed
 Route::group(['middleware' => 'auth'], function() {
 	// Dashboard
 	Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 	// Posts resourcefull controllers routes
-	Route::resource('posts', PostController::class);
+	Route::resource('prestations', PostController::class);
+
 
 	// Comments routes
 	Route::group(['prefix' => '/comments', 'as' => 'comments.'], function() {
