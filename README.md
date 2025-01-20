@@ -1,4 +1,39 @@
 # documentation dev-web
+## Compte-rendu du mini-projet
+
+**Principe**  
+- Laravel est un framework web basé sur PHP.  
+- Après téléchargement, on utilise **Sail** (Docker) pour exécuter les commandes et configurer l'environnement.  
+- Les migrations configurent la base de données.
+
+**Création du projet**  
+- Clonage du projet avec Git.  
+- Installation des dépendances avec `composer install`.  
+- Démarrage avec `sail up -d`.  
+- Migration des données avec `sail php artisan migrate`.
+
+**Modèles et migrations**  
+- Création des modèles avec `sail php artisan make:model Nom -mc` (ex. : `Post`, `Comment`, `Reply`).  
+- Configuration des relations entre les tables dans les modèles (One-to-Many, Many-to-One).  
+- Ajout des champs dans les fichiers de migration pour chaque table (`posts`, `comments`, `replies`).
+
+**Authentification avec Breeze**  
+- Installation avec `sail composer require laravel/breeze --dev`.  
+- Scaffolding des fonctionnalités d'authentification (`sail php artisan breeze:install`), compilation des assets (`sail npm run dev`) et tests sur les pages `/login` et `/register`.
+
+**Controllers**  
+- Gestion des actions via des contrôleurs comme `PostController`, `CommentController` et `ReplyController`.  
+- Les contrôleurs organisent les requêtes entrantes, la logique métier et les interactions avec la base de données.
+
+**Routes**  
+- Configuration des routes dans `web.php` pour l'accès aux fonctionnalités (posts, commentaires, réponses).  
+- Utilisation de middlewares pour sécuriser les pages (ex. : accès restreint aux utilisateurs connectés).
+
+**Vues et Layouts**  
+- Création de layouts (`main.blade.php`, `app.blade.php`) pour partager une structure commune (Bootstrap/Tailwind).  
+- Vues spécifiques pour afficher, créer, et modifier les publications (`home.blade.php`, `create.blade.php`, etc.).  
+- Organisation des blocs réutilisables dans des fichiers partiels (`partials`).
+
 
 ## Principe
 
@@ -12,10 +47,10 @@ Laravel est un framework pour créer des applications web. On commence par le t�
 git clone <url_repo_git
 ```
 
-1. Copier le fichier .env de notre environnement Laravel dans le dossier cloné si il n’y est pas :
+1. Copier le fichier .env.example de notre environnement Laravel dans le dossier cloné si il n’y est pas :
 
 ```bash
-cp .env <chemin_vers_le_dossier_cloné>
+cp .env.example <chemin_vers_le_dossier_cloné>
 ```
 
 1. Lancer le gestionnaire **Composer** pour installer les dépendances dans le répertoire `vendor` de votre projet local 
