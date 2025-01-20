@@ -38,7 +38,7 @@ Route::group(['middleware' => 'auth'], function() {
 	Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 	// Posts resourcefull controllers routes
-	Route::resource('prestations', PostController::class);
+	Route::resource('posts', PostController::class);
 
 
 	// Comments routes
