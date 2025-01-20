@@ -254,3 +254,48 @@ class Reply extends Model
 }
 
 ```
+
+## Authentification :
+
+Laravel propose des kits de démarrage pour vous aider à créer rapidement une application avec des fonctionnalités prêtes à l'emploi (authentification, enregistrement, etc.). Ces kits ne sont pas obligatoires, mais ils simplifient beaucoup le travail initial.
+
+Laravel Breeze est l'un de ces kits. Il permet de mettre en place facilement l'authentification et les éléments de base d'une application Laravel.
+
+Installation de Laravel BReeze avec sail :
+
+```php
+sail composer require laravel/breeze --dev
+```
+
+Scaffold de Breeze :
+
+Le **scaffold de Breeze** automatise la création des composants nécessaires pour un système d'authentification complet (routes, contrôleurs, vues). Cela permet de démarrer rapidement sans avoir  besoin de tout configurer manuellement et  tout en ayant la flexibilité de personnaliser le code généré.
+
+```php
+sail php artisan breeze:install
+```
+
+Choisir ces options pour l’installation :
+
+![image.png](images-doc/image.png)
+
+Compiler les assets frontend (CSS et JavaScript) :
+
+Cette étape prépare et optimise les fichiers CSS et JS pour qu'ils soient utilisables par notre application.
+
+```php
+sail npm install
+sail npm run dev
+```
+
+Faire la migration des données :
+
+```php
+sail php artisan migrate 
+```
+
+On va ensuite tester si ça fonctionne en allant dans aux pages `/login`, `/register` on va essayer de créer un compte et de s’y connecter 
+
+![image.png](images-doc/image%201.png)
+
+![image.png](images-doc/image%202.png)
